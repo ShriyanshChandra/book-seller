@@ -79,13 +79,18 @@
 
 .primary-btn,
 .secondary-btn {
-  padding: 14px 32px;
+  padding: 16px 40px;
   border-radius: 50px;
   font-size: 1.1rem;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   border: none;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  /* For Link components */
+  display: inline-block;
+  /* For Link components */
 }
 
 .primary-btn {

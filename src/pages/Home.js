@@ -1,4 +1,4 @@
-import React from "react";
+import { Link } from "react-router-dom";
 import "./Home.css";
 import Aurora from "./Aurora";
 import NewArrivals from "./NewArrivals";
@@ -27,7 +27,7 @@ const Home = () => {
             materials — all in one place!
           </p>
           <div className="hero-buttons">
-            <button className="primary-btn">Explore Books</button>
+            <Link to="/books" className="primary-btn">Explore Books</Link>
             <button className="secondary-btn">Find Distributors</button>
           </div>
         </div>

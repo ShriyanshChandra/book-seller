@@ -1,8 +1,24 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
-const Navbar = () => {
+const Navbar = ({ setSearchQuery }) => {
+  const [localSearch, setLocalSearch] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = () => {
+    if (setSearchQuery) {
+      setSearchQuery(localSearch);
+    }
+    navigate("/books");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
@@ -30,8 +46,11 @@ const Navbar = () => {
             type="text"
             placeholder="Search..."
             className="search-input"
+            value={localSearch}
+            onChange={(e) => setLocalSearch(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button className="search-btn">
+          <button className="search-btn" onClick={handleSearch}>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
