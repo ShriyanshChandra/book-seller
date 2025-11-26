@@ -80,6 +80,10 @@ body::after {
   background-size: 200px 100px;
   pointer-events: none;
   will-change: transform;
+  /* Performance Optimizations */
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Row 1: Moves Right (All B1 - Closed Books) */
@@ -93,7 +97,7 @@ body::before {
   background-position:
     0 0,
     100px 0;
-  animation: slideRight 60s linear infinite;
+  animation: slideRight 60s steps(1800) infinite;
 }
 
 /* Row 2: Moves Left (All B2 - Open Books) */
@@ -107,25 +111,25 @@ body::after {
   background-position:
     50px 50px,
     150px 50px;
-  animation: slideLeft 60s linear infinite;
+  animation: slideLeft 60s steps(1800) infinite;
 }
 
 @keyframes slideRight {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(200px);
+    transform: translate3d(200px, 0, 0);
   }
 }
 
 @keyframes slideLeft {
   from {
-    transform: translateX(0);
+    transform: translate3d(0, 0, 0);
   }
 
   to {
-    transform: translateX(-200px);
+    transform: translate3d(-200px, 0, 0);
   }
 }

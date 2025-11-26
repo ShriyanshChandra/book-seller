@@ -120,11 +120,17 @@
 .new-arrivals,
 .best-sellers {
   padding: 60px 40px;
-  background-color: white;
+  background: rgba(255, 255, 255, 0.9);
+  /* Higher opacity, no blur */
+  /* backdrop-filter removed for performance */
+  border: 1px solid rgba(255, 255, 255, 0.8);
   text-align: center;
   border-radius: 30px;
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  /* Soft shadow */
   margin: 60px auto;
+  width: calc(100% - 20px);
+  /* 10px gap on each side */
   max-width: 1400px;
   position: relative;
   overflow: hidden;
