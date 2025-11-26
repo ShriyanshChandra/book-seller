@@ -222,3 +222,51 @@
     transform: translateY(0);
   }
 }
+
+/* Mobile Responsive Styles */
+@media screen and (max-width: 768px) {
+  .hero-section {
+    height: auto;
+    min-height: 80vh;
+    padding: 100px 0 60px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero-section .brand-name {
+    font-size: 3rem;
+    display: block;
+    margin: 10px 0;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    gap: 15px;
+    padding: 0 40px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+  }
+
+  .new-arrivals,
+  .best-sellers {
+    padding: 40px 20px;
+    width: calc(100% - 20px);
+    margin: 40px auto;
+  }
+
+  .new-arrivals h2,
+  .best-sellers h2 {
+    font-size: 2rem;
+  }
+
+  .book-grid {
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
