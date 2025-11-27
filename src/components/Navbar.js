@@ -32,7 +32,7 @@ const Navbar = ({ setSearchQuery }) => {
       <div className="navbar-container">
         {/* Logo */}
         <Link to="/" className="logo-link" onClick={() => setIsOpen(false)}>
-          <span className="brand-name">ExamFobia</span>
+          <span className="brand-name">ExamFobiya</span>
         </Link>
 
         {/* Hamburger Icon */}

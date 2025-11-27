@@ -20,7 +20,7 @@ const Home = () => {
 
         <div className="hero-content">
           <h1>
-            Welcome to <span className="brand-name">ExamFobia</span>
+            Welcome to <span className="brand-name">ExamFobiya</span>
           </h1>
           <p>
             Discover new reads, find trusted distributors, and access study

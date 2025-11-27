@@ -47,6 +47,7 @@
   font-weight: 800;
   line-height: 1.2;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
 }
 
 .hero-section .brand-name {
@@ -231,13 +232,13 @@
   }
 
   .hero-content h1 {
-    font-size: 2.5rem;
+    font-size: 5vw;
   }
 
   .hero-section .brand-name {
-    font-size: 3rem;
-    display: block;
-    margin: 10px 0;
+    font-size: 6vw;
+    display: inline-block;
+    margin: 0 5px;
   }
 
   .hero-buttons {
