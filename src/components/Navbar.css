@@ -11,6 +11,10 @@
   box-shadow: var(--shadow-sm);
 }
 
+.navbar-hidden {
+  transform: translateY(-100%);
+}
+
 .theme-toggle {
   background: transparent;
   border: none;
