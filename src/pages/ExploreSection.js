@@ -51,7 +51,7 @@ const ExploreSection = () => {
             id: 8,
             title: "Deep Work",
             author: "Cal Newport",
-            image: "https://m.media-amazon.com/images/I/81xXAyf5TLL.jpg",
+            image: "https://images-na.ssl-images-amazon.com/images/I/81q6ECxcifL.jpg",
         }
     ];
 

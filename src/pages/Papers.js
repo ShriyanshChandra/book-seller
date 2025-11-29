@@ -1,6 +1,5 @@
 import React from "react";
 import "./Papers.css";
-import { motion } from "framer-motion";
 import { DotLottiePlayer } from '@dotlottie/react-player';
 import '@dotlottie/react-player/dist/index.css';
 
