@@ -3,6 +3,7 @@ import "./Home.css";
 import Aurora from "./Aurora";
 import NewArrivals from "./NewArrivals";
 import BestSeller from "./BestSeller";
+import ExploreSection from "./ExploreSection";
 
 const Home = () => {
   return (
@@ -28,7 +29,7 @@ const Home = () => {
           </p>
           <div className="hero-buttons">
             <Link to="/books" className="primary-btn">Explore Books</Link>
-            <button className="secondary-btn">Find Distributors</button>
+            <button className="secondary-btn">Find Book Stores</button>
           </div>
         </div>
       </section>
@@ -38,6 +39,9 @@ const Home = () => {
 
       {/* Best Sellers Section */}
       <BestSeller />
+
+      {/* Explore Section */}
+      <ExploreSection />
     </div>
   );
 };

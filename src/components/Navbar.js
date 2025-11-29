@@ -67,6 +67,7 @@ const Navbar = ({ setSearchQuery }) => {
         <ul className={isOpen ? "nav-menu active" : "nav-menu"}>
           <li><Link to="/" onClick={() => setIsOpen(false)}>Home</Link></li>
           <li><Link to="/books" onClick={() => setIsOpen(false)}>Books</Link></li>
+          <li><Link to="/distributors" onClick={() => setIsOpen(false)}>Book Stores</Link></li>
           <li className="dropdown">
             <span>Downloads</span>
             <ul className="dropdown-menu">

@@ -1,9 +1,30 @@
-// src/pages/Distributors.js
-export default function Distributors() {
+import React from "react";
+import "./Distributors.css";
+import { DotLottiePlayer } from '@dotlottie/react-player';
+import '@dotlottie/react-player/dist/index.css';
+
+const Distributors = () => {
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">Distributors Page</h2>
-      <p>Here we will show distributors of books.</p>
+    <div className="distributors-container">
+      <div className="development-box large">
+        <div className="lottie-container">
+          <DotLottiePlayer
+            src="https://assets-v2.lottiefiles.com/a/04489f0a-1168-11ee-acde-3f59cc25c37d/UfYn4CXhi6.lottie"
+            autoplay
+            loop
+            style={{ height: '300px', width: '300px' }}
+          />
+        </div>
+        <h2>This page is under development</h2>
+        <p>Please check again later!</p>
+        <div className="loading-dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default Distributors;

@@ -92,6 +92,8 @@
   /* For Link components */
   display: inline-block;
   /* For Link components */
+  min-width: 220px;
+  text-align: center;
 }
 
 .primary-btn {
