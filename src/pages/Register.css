@@ -22,11 +22,7 @@
     color: #333;
 }
 
-[data-theme='dark'] .register-card {
-    background: rgba(30, 30, 30, 0.7);
-    color: #fff;
-    border-color: rgba(255, 255, 255, 0.1);
-}
+/* Removed dark mode override for card background to keep it white frosted */
 
 .register-card h2 {
     margin-bottom: 2rem;
@@ -55,6 +51,7 @@
     background: rgba(255, 255, 255, 0.9);
 }
 
+/* Restore dark mode input styling (Global effect for Login & Register) */
 [data-theme='dark'] .form-group input {
     background: #333;
     color: #fff;
@@ -99,17 +96,17 @@
     /* Match vertically */
 }
 
-/* Explicit Dark Mode Overrides for visibility */
+/* Dark Mode Overrides Removed to maintain White Frosted Box look */
+/* Checkbox text color override removed as white box implies dark text */
 [data-theme='dark'] .checkbox-group label {
-    color: #ffffff !important;
-    /* Pure white text for dark mode */
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-    /* Add shadow for better contrast */
+    color: #333 !important;
+    /* Keep dark text on white box */
+    text-shadow: none;
 }
 
 [data-theme='dark'] .checkbox-group input {
-    background-color: #333;
-    border: 1px solid #ffffff;
+    background-color: transparent;
+    border: 1px solid #333;
 }
 
 /* Error Message */
@@ -154,6 +151,4 @@
     /* Default text color */
 }
 
-[data-theme='dark'] .redirect-login {
-    color: #e0e0e0;
-}
+/* Removed dark mode override */
