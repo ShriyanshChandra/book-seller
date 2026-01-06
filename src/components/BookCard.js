@@ -66,8 +66,6 @@ const BookCard = ({ book, index, canEdit, onRemove, onEdit }) => {
                 )}
             </AnimatePresence>
 
-            <p className="book-publisher">by Smart Publications</p>
-
             {canEdit && (
                 <div className="book-actions" onClick={(e) => e.stopPropagation()}>
                     <Link to={`/edit-book/${book.id}`} className="action-btn edit-btn">Edit</Link>
