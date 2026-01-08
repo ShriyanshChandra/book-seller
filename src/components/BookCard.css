@@ -58,6 +58,18 @@
     color: #fff;
 }
 
+.book-price {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #27ae60;
+    /* Green for price */
+    margin: 5px 0;
+}
+
+[data-theme='dark'] .book-price {
+    color: #2ecc71;
+}
+
 .book-details-dropdown {
     text-align: left;
     overflow: hidden;
@@ -116,8 +128,12 @@
 .book-actions {
     display: flex;
     gap: 10px;
-    margin-top: 15px;
+    margin-top: auto;
+    /* Push to bottom */
+    padding-top: 15px;
+    /* Ensure some spacing from content above */
     justify-content: center;
+    width: 100%;
 }
 
 .action-btn {
@@ -170,4 +186,17 @@
     z-index: 2;
     text-transform: uppercase;
     backdrop-filter: blur(4px);
+}
+
+/* Mobile optimizations for narrow screens */
+@media screen and (max-width: 768px) {
+    .action-btn {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+        min-width: 40px;
+    }
+
+    .book-actions {
+        gap: 8px;
+    }
 }

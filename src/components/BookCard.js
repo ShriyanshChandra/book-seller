@@ -39,6 +39,9 @@ const BookCard = ({ book, index, canEdit, onRemove, onEdit }) => {
                 <span className="book-category-badge">{book.category}</span>
             )}
             <h3>{book.title}</h3>
+            <p className="book-price">
+                {book.price !== undefined && book.price !== null ? `₹ ${book.price}` : '₹ 0'}
+            </p>
             <AnimatePresence>
                 {isExpanded && (
                     <motion.div

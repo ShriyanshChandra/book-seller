@@ -13,6 +13,7 @@ const AddBook = () => {
     const isEditMode = !!id;
 
     const [title, setTitle] = useState('');
+    const [price, setPrice] = useState(''); // Added price state
     const [category, setCategory] = useState(''); // Added category state
     const [sections, setSections] = useState([]); // Changed to array
     const [image, setImage] = useState(null);
@@ -28,6 +29,7 @@ const AddBook = () => {
             const bookToEdit = books.find(b => b.id.toString() === id);
             if (bookToEdit) {
                 setTitle(bookToEdit.title);
+                setPrice(bookToEdit.price || ''); // Load price
                 setCategory(bookToEdit.category || ''); // Load category
                 // Handle legacy 'section' or new 'sections'
                 if (bookToEdit.sections) {
@@ -144,6 +146,7 @@ const AddBook = () => {
         try {
             const bookData = {
                 title,
+                price: parseFloat(price) || 0, // Save price
                 category, // Save category
                 author: "Smart Publications",
                 sections,
@@ -175,6 +178,17 @@ const AddBook = () => {
                     <div className="form-group">
                         <label>Title:</label>
                         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Price (₹):</label>
+                        <input
+                            type="number"
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
+                            placeholder="Enter price"
+                            min="0"
+                        />
                     </div>
 
                     <div className="form-group">

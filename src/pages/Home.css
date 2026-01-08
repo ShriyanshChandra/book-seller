@@ -304,13 +304,20 @@
   }
 
   .book-card {
-    min-width: 85vw;
-    /* Show one card prominently */
-    max-width: 300px;
-    /* Cap width */
+    min-width: calc(50vw - 40px);
+    /* 2 cards - (padding/gap logic) */
+    /* Container padding 20px each side = 40px. Gap 20px. 
+       Available: 100vw - 40. 
+       2 cards + 20 gap = available. 
+       2w = 100vw - 40 - 20 = 100vw - 60. 
+       w = 50vw - 30. 
+       Let's use 50vw - 35px to be safe. */
+    min-width: calc(50vw - 35px);
+    max-width: none;
     flex: 0 0 auto;
-    scroll-snap-align: center;
-    /* Center the card */
+    scroll-snap-align: start;
     margin: 0;
+    padding: 10px;
+    /* Reduce padding for narrow screens */
   }
 }
