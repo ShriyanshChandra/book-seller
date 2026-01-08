@@ -107,9 +107,12 @@
 
 @media screen and (max-width: 768px) {
     .explore-section {
-        padding: 40px 20px;
-        width: calc(100% - 20px);
-        margin: 40px auto;
+        padding: 20px 5px;
+        /* Decreased padding */
+        width: 98%;
+        /* Increased width */
+        margin: 20px auto;
+        /* Decreased margin */
     }
 
     .explore-section h2 {

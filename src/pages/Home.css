@@ -279,11 +279,12 @@
 
   .new-arrivals,
   .best-sellers {
-    padding: 20px 10px;
-    /* Very compact */
-    width: 95%;
-    margin: 20px auto;
-    /* Reduced margin */
+    padding: 15px 5px;
+    /* Decreased padding */
+    width: 98%;
+    /* Increased width */
+    margin: 15px auto;
+    /* Decreased margin */
     border-radius: 15px;
   }
 
@@ -322,9 +323,10 @@
   }
 
   .book-card {
-    min-width: calc(50vw - 25px);
-    /* Tighter fit with smaller gap */
-    max-width: none;
+    min-width: 190px !important;
+    width: 190px !important;
+    max-width: 190px !important;
+    /* Ensure it doesn't grow */
     flex: 0 0 auto;
     scroll-snap-align: start;
     margin: 0;
