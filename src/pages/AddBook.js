@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBooks } from '../context/BookContext';
-import { extractTextFromPdf, formatToTopics } from '../utils/pdfUtils';
+import { extractTextFromFile, formatToTopics } from '../utils/documentUtils';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './AddBook.css';
 import ConfirmationModal from '../components/ConfirmationModal';
 
@@ -15,6 +17,7 @@ const AddBook = () => {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState(''); // Added price state
     const [category, setCategory] = useState(''); // Added category state
+    const [semester, setSemester] = useState(''); // Added semester state
     const [sections, setSections] = useState([]); // Changed to array
     const [image, setImage] = useState(null);
     const [contents, setContents] = useState('');
@@ -31,6 +34,7 @@ const AddBook = () => {
                 setTitle(bookToEdit.title);
                 setPrice(bookToEdit.price || ''); // Load price
                 setCategory(bookToEdit.category || ''); // Load category
+                setSemester(bookToEdit.semester || ''); // Load semester
                 // Handle legacy 'section' or new 'sections'
                 if (bookToEdit.sections) {
                     setSections(bookToEdit.sections);
@@ -84,17 +88,18 @@ const AddBook = () => {
         setImage(directUrl); // Update preview immediately
     };
 
-    const handlePdfChange = async (e) => {
+    const handleFileChange = async (e) => {
         const file = e.target.files[0];
         if (file) {
             setLoading(true);
             try {
-                const text = await extractTextFromPdf(file);
+                const text = await extractTextFromFile(file);
                 // Format the extracted text to a simpler representation for details
                 const formatted = formatToTopics(text);
                 setContents(formatted);
             } catch (err) {
-                alert('Failed to extract text from PDF');
+                alert('Failed to extract text from file');
+                console.error(err);
             } finally {
                 setLoading(false);
             }
@@ -148,6 +153,7 @@ const AddBook = () => {
                 title,
                 price: parseFloat(price) || 0, // Save price
                 category, // Save category
+                semester: category === 'BCA' ? semester : null, // Save semester only if BCA
                 author: "Smart Publications",
                 sections,
                 image: finalImage,
@@ -205,6 +211,26 @@ const AddBook = () => {
                             <option value="PGDCA">PGDCA</option>
                         </select>
                     </div>
+
+                    {category === 'BCA' && (
+                        <div className="form-group">
+                            <label>Semester:</label>
+                            <select
+                                value={semester}
+                                onChange={(e) => setSemester(e.target.value)}
+                                className="category-select"
+                                required
+                            >
+                                <option value="">Select Semester</option>
+                                <option value="BCA 1st Semester">1st Semester</option>
+                                <option value="BCA 2nd Semester">2nd Semester</option>
+                                <option value="BCA 3rd Semester">3rd Semester</option>
+                                <option value="BCA 4th Semester">4th Semester</option>
+                                <option value="BCA 5th Semester">5th Semester</option>
+                                <option value="BCA 6th Semester">6th Semester</option>
+                            </select>
+                        </div>
+                    )}
 
                     {/* Author removed - defaulted to Smart Publications */}
 
@@ -273,7 +299,7 @@ const AddBook = () => {
                                 className={`toggle-btn ${entryMode === 'pdf' ? 'active' : ''}`}
                                 onClick={() => setEntryMode('pdf')}
                             >
-                                Upload PDF
+                                Upload PDF / DOCX
                             </button>
                             <button
                                 type="button"
@@ -287,9 +313,13 @@ const AddBook = () => {
 
                     {entryMode === 'pdf' ? (
                         <div className="form-group">
-                            <label>Table of Content (PDF):</label>
-                            <small>Upload PDF to extract topics automatically</small>
-                            <input type="file" accept="application/pdf" onChange={handlePdfChange} />
+                            <label>Table of Content (PDF / DOCX):</label>
+                            <small>Upload file to extract topics automatically</small>
+                            <input
+                                type="file"
+                                accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                onChange={handleFileChange}
+                            />
                             {loading && <p>Extracting text...</p>}
                         </div>
                     ) : (
@@ -301,12 +331,21 @@ const AddBook = () => {
 
                     <div className="form-group">
                         <label>{entryMode === 'pdf' ? 'Extracted Contents (Editable):' : 'Enter Topics:'}</label>
-                        <textarea
-                            rows="5"
+                        <ReactQuill
+                            theme="snow"
                             value={contents}
-                            onChange={(e) => setContents(e.target.value)}
-                            placeholder={entryMode === 'pdf' ? "Topics will appear here..." : "1. Introduction\n2. Chapter 1..."}
-                        ></textarea>
+                            onChange={setContents}
+                            placeholder={entryMode === 'pdf' ? "Topics will appear here..." : "Paste your topics here (formatting will be preserved)..."}
+                            modules={{
+                                toolbar: [
+                                    [{ 'header': [1, 2, 3, false] }],
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
+                                    ['clean']
+                                ]
+                            }}
+                        />
                     </div>
 
                     {/* Description Removed as per request */}

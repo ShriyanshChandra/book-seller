@@ -3,7 +3,12 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requiredRole }) => {
-    const { user } = useAuth();
+    const { user, loading } = useAuth();
+
+    if (loading) {
+        // Optional: Render a spinner or simpler loading state
+        return <div className="text-center mt-5">Loading...</div>;
+    }
 
     if (!user) {
         // User is not logged in, redirect to login

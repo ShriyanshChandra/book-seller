@@ -32,26 +32,40 @@ export const fetchAnalyticsData = async () => {
         }));
 
         // 5. Generate Mock Traffic Data (Last 7 Days)
-        // 5. Generate Dynamic Traffic Data (Last 7 Days)
+        // 5. Fetch Real Daily Traffic Data (Last 7 Days)
         const trafficData = [];
         const today = new Date();
+        const daysToFetch = 7;
 
-        for (let i = 6; i >= 0; i--) {
+        for (let i = daysToFetch - 1; i >= 0; i--) {
             const date = new Date(today);
             date.setDate(today.getDate() - i);
-
-            // Format: "Jan 7"
             const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
-            // Mock random distribution based on total visits to make it look realistic
-            // This ensures the graph trends upwards to the current total
-            const randomDrop = Math.floor(Math.random() * 10) + (i * 5);
-            const visits = Math.max(0, totalVisits - randomDrop);
+            // Format ID as YYYY-MM-DD to match storage (Local Time)
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const docId = `${year}-${month}-${day}`;
 
-            trafficData.push({
-                name: dateStr,
-                visits: i === 0 ? totalVisits : visits // Ensure today matches total
-            });
+            console.log("Fetching stats for:", docId); // Debug log
+
+            const dailyDocRef = doc(db, 'daily_stats', docId);
+
+            // We fetch each day individually. For 7 days this is okay.
+            // In a larger app, you'd query a range.
+            try {
+                const dailySnapshot = await getDoc(dailyDocRef);
+                const visits = dailySnapshot.exists() ? dailySnapshot.data().visits : 0;
+
+                trafficData.push({
+                    name: dateStr,
+                    visits: visits
+                });
+            } catch (err) {
+                console.warn(`Could not fetch stats for ${docId}`, err);
+                trafficData.push({ name: dateStr, visits: 0 });
+            }
         }
 
         return {

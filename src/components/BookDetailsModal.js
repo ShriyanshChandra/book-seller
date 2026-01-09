@@ -41,23 +41,44 @@ const BookDetailsModal = ({ book, onClose }) => {
                     <div className="modal-right-section">
                         <h2 className="topics-heading">Topics Covered</h2>
                         <div className="topics-list-container">
-                            <ol className="topics-list">
-                                {book.contents ? (
-                                    Array.isArray(book.contents)
-                                        ? book.contents.map((topic, i) => <li key={i}>{topic}</li>)
-                                        : book.contents.split('\n').filter(line => line.trim() !== '').map((topic, i) => (
-                                            <li key={i}>{topic.replace(/^\d+\.\s*/, '')}</li>
-                                        ))
-                                ) : (
-                                    <li>No specific topics listed.</li>
-                                )}
-                            </ol>
+                            <div className="topics-content">
+                                {renderTopics(book.contents)}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>,
         document.body
+    );
+};
+
+// Helper to render topics (supports both legacy text and new HTML)
+const renderTopics = (contents) => {
+    if (!contents) return <p>No specific topics listed.</p>;
+
+    // Check if contents are array (legacy data support)
+    if (Array.isArray(contents)) {
+        return <ul>{contents.map((t, i) => <li key={i}>{t}</li>)}</ul>;
+    }
+
+    // Check if contents contain HTML tags (heuristic)
+    const hasHtml = /<[a-z][\s\S]*>/i.test(contents);
+
+    if (hasHtml) {
+        return (
+            <div
+                className="rich-text-content"
+                dangerouslySetInnerHTML={{ __html: contents }}
+            />
+        );
+    }
+
+    // Fallback for plain text (legacy)
+    return (
+        <ul className="hierarchical-topics">
+            {contents.split('\n').filter(l => l.trim()).map((line, i) => <li key={i}>{line}</li>)}
+        </ul>
     );
 };
 

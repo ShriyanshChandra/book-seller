@@ -168,3 +168,82 @@
 textarea {
     resize: vertical;
 }
+
+/* Force text color to ensure visibility even if pasted content has bad colors */
+.ql-editor {
+    color: #1f2937 !important;
+    min-height: 150px;
+    text-align: left;
+}
+
+.ql-editor * {
+    color: inherit !important;
+    /* Force children to inherit the high-contrast color */
+}
+
+/* Dark Mode Support */
+body.dark-mode .add-book-card {
+    background: #1f2937;
+    color: #e5e7eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .add-book-card h2 {
+    color: #f3f4f6;
+}
+
+body.dark-mode .form-group label {
+    color: #d1d5db;
+}
+
+body.dark-mode .form-group input[type="text"],
+body.dark-mode .form-group input[type="number"],
+body.dark-mode .form-group select,
+body.dark-mode .form-group textarea {
+    background-color: #374151;
+    color: #f9fafb;
+    border-color: #4b5563;
+}
+
+body.dark-mode .form-group input::placeholder,
+body.dark-mode .form-group textarea::placeholder {
+    color: #9ca3af;
+}
+
+/* React Quill Dark Mode Overrides */
+body.dark-mode .quill {
+    background-color: #374151;
+    border-radius: 6px;
+    border: 1px solid #4b5563;
+}
+
+body.dark-mode .ql-toolbar {
+    border-color: #4b5563 !important;
+    background-color: #1f2937;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+}
+
+body.dark-mode .ql-container {
+    border-color: #4b5563 !important;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    font-size: 1rem;
+}
+
+body.dark-mode .ql-editor {
+    color: #f3f4f6 !important;
+    min-height: 150px;
+}
+
+body.dark-mode .ql-stroke {
+    stroke: #d1d5db !important;
+}
+
+body.dark-mode .ql-fill {
+    fill: #d1d5db !important;
+}
+
+body.dark-mode .ql-picker {
+    color: #d1d5db !important;
+}
