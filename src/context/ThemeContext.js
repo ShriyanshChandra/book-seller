@@ -13,6 +13,13 @@ export const ThemeProvider = ({ children }) => {
     useEffect(() => {
         localStorage.setItem('theme', theme);
         document.documentElement.setAttribute('data-theme', theme);
+
+        // Also toggle body class for legacy CSS support
+        if (theme === 'dark') {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
     }, [theme]);
 
     const toggleTheme = () => {
