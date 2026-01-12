@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useBooks } from '../context/BookContext';
 import { extractTextFromFile, formatToTopics } from '../utils/documentUtils';
@@ -6,6 +6,17 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './AddBook.css';
 import ConfirmationModal from '../components/ConfirmationModal';
+
+// Define Quill modules outside component to prevent re-renders
+const QUILL_MODULES = {
+    toolbar: [
+        ['bold', 'italic', 'underline', 'strike'],        // basic formatting
+        [{ 'list': 'ordered' }, { 'list': 'bullet' }],    // lists
+        [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
+        ['clean'],                                         // remove formatting button
+        ['link']                                           // link button
+    ]
+};
 
 const AddBook = () => {
     const { addBook, updateBook, books } = useBooks(); // Added updateBook, books
@@ -25,6 +36,15 @@ const AddBook = () => {
     const [entryMode, setEntryMode] = useState('pdf'); // 'pdf' or 'manual'
 
     const [showDuplicateWarning, setShowDuplicateWarning] = useState(false);
+
+    // Find and Replace States
+    const [showFindReplace, setShowFindReplace] = useState(false);
+    const [findText, setFindText] = useState('');
+    const [replaceText, setReplaceText] = useState('');
+
+    // Editor Ref and Search State
+    const quillRef = useRef(null);
+    const [lastSearchIndex, setLastSearchIndex] = useState(0);
 
     // Load book data if editing
     useEffect(() => {
@@ -176,6 +196,83 @@ const AddBook = () => {
         }
     };
 
+    // Find Logic
+    const handleFind = () => {
+        if (!findText) return;
+        if (!quillRef.current) return;
+        const quill = quillRef.current.getEditor();
+        const text = quill.getText();
+        const idx = text.toLowerCase().indexOf(findText.toLowerCase(), lastSearchIndex);
+
+        if (idx !== -1) {
+            quill.setSelection(idx, findText.length);
+            setLastSearchIndex(idx + 1);
+        } else {
+            if (lastSearchIndex > 0) {
+                // Loop back to start
+                if (window.confirm('Reached end of document. Search from top?')) {
+                    setLastSearchIndex(0);
+                    // We can immediately trigger search again here or let user click
+                    // Let's trigger it immediately for better UX (but need careful recursion check, so just set 0)
+                    // Actually, let's just reset 0 and try to find from 0
+                    const retryIdx = text.toLowerCase().indexOf(findText.toLowerCase(), 0);
+                    if (retryIdx !== -1) {
+                        quill.setSelection(retryIdx, findText.length);
+                        setLastSearchIndex(retryIdx + 1);
+                    } else {
+                        alert('Text not found.');
+                    }
+                }
+            } else {
+                alert('Text not found.');
+            }
+        }
+    };
+
+    // Replace Logic
+    const handleReplace = () => {
+        if (!findText) return;
+        if (!quillRef.current) return;
+        const quill = quillRef.current.getEditor();
+        const range = quill.getSelection();
+
+        let didReplace = false;
+        if (range && range.length > 0) {
+            const selectedText = quill.getText(range.index, range.length);
+            if (selectedText.toLowerCase() === findText.toLowerCase()) {
+                quill.deleteText(range.index, range.length);
+                quill.insertText(range.index, replaceText);
+                setLastSearchIndex(range.index + replaceText.length);
+                didReplace = true;
+            }
+        }
+
+        if (!didReplace) {
+            handleFind(); // Find next occurrence if current wasn't a match
+        } else {
+            // After replace, maybe find next automatically?
+            // User behavior varies, but often yes.
+            // Let's not auto-find next to avoid confusion, but finding is one click away.
+            // Or better, stick to "Replace" meaning "Replace current".
+        }
+    };
+
+    // Replace All Logic
+    const handleReplaceAll = () => {
+        if (!findText) return;
+        // Escape special regex characters
+        const escapedFind = findText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp(escapedFind, 'g');
+        const newContents = contents.replace(regex, replaceText);
+        setContents(newContents);
+        if (newContents === contents) {
+            alert('No matches found.');
+        } else {
+            alert('Replaced all occurrences.');
+            setLastSearchIndex(0); // Reset search index
+        }
+    };
+
     return (
         <div className="add-book-container">
             <div className="add-book-card">
@@ -311,6 +408,64 @@ const AddBook = () => {
                         </div>
                     </div>
 
+                    {/* Find and Replace Logic */}
+                    {entryMode === 'manual' && (
+                        <div className="form-group" style={{ marginBottom: '10px' }}>
+                            <button
+                                type="button"
+                                className="toggle-find-btn"
+                                onClick={() => setShowFindReplace(!showFindReplace)}
+                            >
+                                {showFindReplace ? 'Hide Find & Replace' : 'Show Find & Replace'}
+                            </button>
+
+                            {showFindReplace && (
+                                <div className="find-replace-toolbar">
+                                    <input
+                                        type="text"
+                                        placeholder="Find..."
+                                        value={findText}
+                                        onChange={(e) => {
+                                            setFindText(e.target.value);
+                                            setLastSearchIndex(0); // Reset search when text changes
+                                        }}
+                                        className="find-input"
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder="Replace with..."
+                                        value={replaceText}
+                                        onChange={(e) => setReplaceText(e.target.value)}
+                                        className="find-input"
+                                    />
+                                    <button
+                                        type="button"
+                                        className="action-btn"
+                                        style={{ backgroundColor: '#007bff', color: 'white' }}
+                                        onClick={handleFind}
+                                    >
+                                        Find
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="action-btn"
+                                        style={{ backgroundColor: '#17a2b8', color: 'white' }}
+                                        onClick={handleReplace}
+                                    >
+                                        Replace
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="action-btn replace-btn"
+                                        onClick={handleReplaceAll}
+                                    >
+                                        Replace All
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    )}
+
                     {entryMode === 'pdf' ? (
                         <div className="form-group">
                             <label>Table of Content (PDF / DOCX):</label>
@@ -332,19 +487,13 @@ const AddBook = () => {
                     <div className="form-group">
                         <label>{entryMode === 'pdf' ? 'Extracted Contents (Editable):' : 'Enter Topics:'}</label>
                         <ReactQuill
+                            ref={quillRef}
+                            key={entryMode}
                             theme="snow"
                             value={contents}
                             onChange={setContents}
                             placeholder={entryMode === 'pdf' ? "Topics will appear here..." : "Paste your topics here (formatting will be preserved)..."}
-                            modules={{
-                                toolbar: [
-                                    [{ 'header': [1, 2, 3, false] }],
-                                    ['bold', 'italic', 'underline', 'strike'],
-                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                                    [{ 'indent': '-1' }, { 'indent': '+1' }],
-                                    ['clean']
-                                ]
-                            }}
+                            modules={QUILL_MODULES}
                         />
                     </div>
 

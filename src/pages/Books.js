@@ -66,7 +66,7 @@ function Books({ searchQuery }) {
     const matchesCategory = selectedCategory === "All" || book.category === selectedCategory;
 
     return matchesSearch && matchesCategory;
-  });
+  }).sort((a, b) => a.title.localeCompare(b.title));
 
   const canAddBook = user && (user.role === 'admin' || user.role === 'developer');
 

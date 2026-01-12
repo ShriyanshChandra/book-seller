@@ -173,7 +173,7 @@ textarea {
 .ql-editor {
     color: #1f2937 !important;
     min-height: 150px;
-    text-align: left;
+    text-align: left !important;
 }
 
 .ql-editor * {
@@ -246,4 +246,75 @@ body.dark-mode .ql-fill {
 
 body.dark-mode .ql-picker {
     color: #d1d5db !important;
+}
+
+/* Find and Replace Styles */
+.toggle-find-btn {
+    background: none;
+    border: none;
+    color: #007bff;
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+    margin-bottom: 8px;
+}
+
+.find-replace-toolbar {
+    display: flex;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.find-input {
+    flex: 1;
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 120px;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.replace-btn {
+    background-color: #28a745;
+    color: white;
+}
+
+.replace-btn:hover {
+    background-color: #218838;
+}
+
+body.dark-mode .find-replace-toolbar {
+    background: #2d3748;
+    border-color: #4a5568;
+}
+
+body.dark-mode .find-input {
+    background: #4a5568;
+    border-color: #718096;
+    color: #fff;
+}
+
+/* Nested Bullet Styling */
+/* Level 1 (Defaut) is Disc */
+/* Level 2 (Indented once) - Circle */
+.ql-editor li.ql-indent-1 {
+    list-style-type: circle !important;
+}
+
+/* Level 3 (Indented twice) - Square */
+.ql-editor li.ql-indent-2 {
+    list-style-type: square !important;
 }
